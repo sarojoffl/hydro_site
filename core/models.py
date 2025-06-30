@@ -49,18 +49,31 @@ class Feature(models.Model):
     def __str__(self):
         return self.title
 
+from django.utils.text import slugify
+
 class Service(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     image = models.ImageField(upload_to='services/')
+    slug = models.SlugField(null=True, blank=True, unique=False)
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug and self.title:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 class Project(models.Model):
+    STATUS_CHOICES = (
+        ('ongoing', 'Ongoing'),
+        ('completed', 'Completed'),
+    )
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='projects/')
     link = models.URLField(blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ongoing')
 
     def __str__(self):
         return self.title
@@ -104,3 +117,45 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.name} - {self.subject}"
+
+class Download(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    file = models.FileField(upload_to='downloads/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Report(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    file = models.FileField(upload_to='reports/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Notice(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    attachment = models.FileField(upload_to='notices/', blank=True, null=True)
+    published_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Client(models.Model):
+    name = models.CharField(max_length=200)
+    logo = models.ImageField(upload_to='clients/')
+    website = models.URLField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

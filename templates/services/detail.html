@@ -1,0 +1,10 @@
+<!-- services/detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>{{ service.title }}</h1>
+  <img src="{{ service.image.url }}" class="img-fluid mb-4" alt="">
+  <p>{{ service.description }}</p>
+</div>
+{% endblock %}

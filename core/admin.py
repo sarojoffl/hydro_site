@@ -15,4 +15,8 @@ admin.site.register(models.Service)
 admin.site.register(models.Project)
 admin.site.register(models.TeamMember)
 admin.site.register(models.Testimonial)
+admin.site.register(models.Report)
+admin.site.register(models.Download)
+admin.site.register(models.Notice)
+admin.site.register(models.Client)
 

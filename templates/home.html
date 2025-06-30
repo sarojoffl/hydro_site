@@ -107,4 +107,26 @@
 <!-- Testimonials Section -->
 {% include "partials/testimonials_section.html" %}
 
+<!-- Clients Section -->
+<div class="container-xxl py-5">
+  <div class="container text-center">
+    <p class="fw-medium text-uppercase text-primary mb-2">Our Clients & Partners</p>
+    <h1 class="display-5 mb-5">Trusted By</h1>
+    <div class="row g-4 justify-content-center align-items-center">
+      {% for client in clients %}
+      <div class="col-6 col-md-3">
+        {% if client.website %}
+          <a href="{{ client.website }}" target="_blank" rel="noopener">
+            <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid grayscale" style="max-height: 100px;">
+          </a>
+        {% else %}
+          <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid grayscale" style="max-height: 100px;">
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- Clients End -->
+
 {% endblock %}

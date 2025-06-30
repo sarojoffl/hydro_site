@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .models import (
     ContactInfo, ContactMessage, CarouselItem, AboutImage, AboutInfo,
-    Fact, Feature, Service, Project, TeamMember, Testimonial, FeatureImage
+    Fact, Feature, Service, Project, TeamMember, Testimonial, FeatureImage,
+    Report, Download, Notice, Client, NewsletterSubscriber
 )
 from .forms import ContactForm
-
+from django.contrib import messages
+from django.shortcuts import redirect
 
 # Home Page View
 def home(request):
@@ -20,6 +22,7 @@ def home(request):
         'team_members': TeamMember.objects.all(),
         'testimonials': Testimonial.objects.all(),
         'contact_info': ContactInfo.objects.first(),
+        'clients': Client.objects.all(),
     }
     return render(request, 'home.html', context)
 
@@ -45,17 +48,36 @@ def services(request):
 
     return render(request, 'services.html', context)
 
+from django.shortcuts import get_object_or_404
+
+def service_detail(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    return render(request, 'services/detail.html', {'service': service})
+
 def projects(request):
-    return render(request, 'projects.html')
+    ongoing_projects = Project.objects.filter(status='ongoing')
+    completed_projects = Project.objects.filter(status='completed')
+
+    context = {
+        'ongoing_projects': ongoing_projects,
+        'completed_projects': completed_projects,
+    }
+    return render(request, 'projects.html', context)
 
 def reports(request):
-    return render(request, 'reports.html')
+    reports = Report.objects.all().order_by('-created_at')  # latest first
+    context = {'reports': reports}
+    return render(request, 'reports.html', context)
 
 def downloads(request):
-    return render(request, 'downloads.html')
+    downloads = Download.objects.all().order_by('-uploaded_at')
+    context = {'downloads': downloads}
+    return render(request, 'downloads.html', context)
 
 def notice(request):
-    return render(request, 'notice.html')
+    notices = Notice.objects.all().order_by('-published_at')
+    context = {'notices': notices}
+    return render(request, 'notice.html', context)
 
 
 # Contact Page View
@@ -84,3 +106,21 @@ def contact(request):
         'form': form,
         'contact_info': contact_info,
     })
+
+def clients(request):
+    clients = Client.objects.all()
+    context = {'clients': clients}
+    return render(request, 'clients.html', context)
+
+def subscribe_newsletter(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        if email:
+            if not NewsletterSubscriber.objects.filter(email=email).exists():
+                NewsletterSubscriber.objects.create(email=email)
+                messages.success(request, "Thank you for subscribing!")
+            else:
+                messages.info(request, "You're already subscribed.")
+        else:
+            messages.error(request, "Please enter a valid email.")
+    return redirect(request.META.get('HTTP_REFERER', '/'))

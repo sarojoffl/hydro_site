@@ -23,7 +23,7 @@
               <p class="text-white mb-0">{{ svc.description }}</p>
             </div>
           </div>
-          <a class="btn btn-light" href="{{ svc.link|default:'#' }}">Read More</a>
+          <a class="btn btn-light" href="{% url 'service_detail' svc.slug %}">Read More</a>
         </div>
       </div>
       {% endfor %}
