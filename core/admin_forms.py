@@ -6,7 +6,8 @@ from .models import (
     Service, Project,
     TeamMember, Testimonial,
     Download, Report, Notice,
-    Client, ContactInfo
+    Client, ContactInfo,
+    OrganizationDetail,
 )
 
 class CarouselItemForm(forms.ModelForm):
@@ -150,4 +151,26 @@ class ContactInfoForm(forms.ModelForm):
         widgets = {
             'office_address': forms.Textarea(attrs={'rows': 2}),
             'map_iframe_src': forms.Textarea(attrs={'rows': 3}),
+        }
+
+class OrganizationDetailForm(forms.ModelForm):
+    class Meta:
+        model = OrganizationDetail
+        fields = [
+            'site_title', 'address', 'phone', 'email',
+            'weekday_hours', 'saturday_hours', 'sunday_hours',
+            'facebook', 'twitter', 'instagram', 'linkedin',
+        ]
+        widgets = {
+            'site_title': forms.TextInput(attrs={'placeholder': 'Site Title'}),
+            'address': forms.TextInput(attrs={'placeholder': 'Address'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Phone'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+            'weekday_hours': forms.TextInput(attrs={'placeholder': 'Monday - Friday hours'}),
+            'saturday_hours': forms.TextInput(attrs={'placeholder': 'Saturday hours'}),
+            'sunday_hours': forms.TextInput(attrs={'placeholder': 'Sunday hours'}),
+            'facebook': forms.URLInput(attrs={'placeholder': 'Facebook URL'}),
+            'twitter': forms.URLInput(attrs={'placeholder': 'Twitter URL'}),
+            'instagram': forms.URLInput(attrs={'placeholder': 'Instagram URL'}),
+            'linkedin': forms.URLInput(attrs={'placeholder': 'LinkedIn URL'}),
         }

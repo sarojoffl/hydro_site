@@ -9,13 +9,15 @@ from django.urls import reverse
 from .models import (
     AboutImage, AboutInfo, CarouselItem, Download, Fact,
     Feature, FeatureImage, Notice, Project, Report,
-    Service, TeamMember, Testimonial, Client, NewsletterSubscriber, ContactInfo, ContactMessage
+    Service, TeamMember, Testimonial, Client, NewsletterSubscriber,
+    ContactInfo, ContactMessage, OrganizationDetail
 )
 
 from .admin_forms import (
     AboutImageForm, AboutInfoForm, CarouselItemForm, DownloadForm, FactForm,
     FeatureForm, FeatureImageForm, NoticeForm, ProjectForm, ReportForm,
     ServiceForm, TeamMemberForm, TestimonialForm, ClientForm, ContactInfoForm,
+    OrganizationDetailForm
 )
 
 @login_required
@@ -799,3 +801,60 @@ def export_newsletter_subscribers_csv(request):
         writer.writerow([sub.email, sub.subscribed_at.strftime('%Y-%m-%d %H:%M')])
 
     return response
+
+@login_required
+def organizationdetail_list(request):
+    organizationdetails = OrganizationDetail.objects.all()
+    return render(request, 'dashboard/organizationdetail_list.html', {'organizationdetails': organizationdetails})
+
+@login_required
+def add_organizationdetail(request):
+    if OrganizationDetail.objects.exists():
+        messages.warning(request, "Only one organization detail can be added. Please edit the existing one.")
+        return redirect('organizationdetail_list')
+
+    if request.method == 'POST':
+        form = OrganizationDetailForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Organization details added successfully.')
+            return redirect('organizationdetail_list')
+    else:
+        form = OrganizationDetailForm()
+
+    return render(request, 'dashboard/generic_form.html', {
+        'form': form,
+        'title': 'Add Organization Details',
+        'cancel_url': reverse('organizationdetail_list'),
+    })
+
+@login_required
+def edit_organizationdetail(request, pk):
+    obj = get_object_or_404(OrganizationDetail, pk=pk)
+
+    if request.method == 'POST':
+        form = OrganizationDetailForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Organization details updated successfully.')
+            return redirect('organizationdetail_list')
+    else:
+        form = OrganizationDetailForm(instance=obj)
+
+    return render(request, 'dashboard/generic_form.html', {
+        'form': form,
+        'title': 'Edit Organization Details',
+        'cancel_url': reverse('organizationdetail_list'),
+    })
+
+@login_required
+def delete_organizationdetail(request, pk):
+    obj = get_object_or_404(OrganizationDetail, pk=pk)
+    if request.method == 'POST':
+        obj.delete()
+        messages.success(request, 'Organization details deleted successfully.')
+        return redirect('organizationdetail_list')
+    return render(request, 'dashboard/confirm_delete.html', {
+        'object': obj,
+        'cancel_url': reverse('organizationdetail_list'),
+    })

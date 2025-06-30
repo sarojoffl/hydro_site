@@ -101,4 +101,10 @@ urlpatterns = [
     path('newsletter/', admin_views.newsletter_list, name='newsletter_list'),
     path('newsletter/delete/<int:pk>/', admin_views.delete_newsletter_subscriber, name='delete_newsletter_subscriber'),
     path('newsletter-subscribers/export-csv/', admin_views.export_newsletter_subscribers_csv, name='export_newsletter_subscribers_csv'),
+
+    # ORGANIZATION DETAILS
+    path('organizationdetails/', admin_views.organizationdetail_list, name='organizationdetail_list'),
+    path('organizationdetails/add/', admin_views.add_organizationdetail, name='add_organizationdetail'),
+    path('organizationdetails/<int:pk>/edit/', admin_views.edit_organizationdetail, name='edit_organizationdetail'),
+    path('organizationdetails/<int:pk>/delete/', admin_views.delete_organizationdetail, name='delete_organizationdetail'),
 ]

@@ -159,3 +159,20 @@ class NewsletterSubscriber(models.Model):
 
     def __str__(self):
         return self.email
+    
+class OrganizationDetail(models.Model):
+    site_title = models.CharField(max_length=200, default='Hydro Organization')
+    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=30)
+    email = models.EmailField()
+    weekday_hours = models.CharField(max_length=100)
+    saturday_hours = models.CharField(max_length=100)
+    sunday_hours = models.CharField(max_length=100)
+
+    facebook = models.URLField(blank=True)
+    twitter = models.URLField(blank=True)
+    instagram = models.URLField(blank=True)
+    linkedin = models.URLField(blank=True)
+
+    def __str__(self):
+        return self.site_title
