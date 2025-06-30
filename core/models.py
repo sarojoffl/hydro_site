@@ -164,6 +164,7 @@ class OrganizationDetail(models.Model):
     site_title = models.CharField(max_length=200, default='Hydro Organization')
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
+    whatsapp_number = models.CharField(max_length=20, blank=True)
     email = models.EmailField()
     weekday_hours = models.CharField(max_length=100)
     saturday_hours = models.CharField(max_length=100)

@@ -157,7 +157,7 @@ class OrganizationDetailForm(forms.ModelForm):
     class Meta:
         model = OrganizationDetail
         fields = [
-            'site_title', 'address', 'phone', 'email',
+            'site_title', 'address', 'phone', 'whatsapp_number', 'email',
             'weekday_hours', 'saturday_hours', 'sunday_hours',
             'facebook', 'twitter', 'instagram', 'linkedin',
         ]
@@ -165,6 +165,7 @@ class OrganizationDetailForm(forms.ModelForm):
             'site_title': forms.TextInput(attrs={'placeholder': 'Site Title'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
             'phone': forms.TextInput(attrs={'placeholder': 'Phone'}),
+            'whatsapp_number': forms.TextInput(attrs={'placeholder': 'WhatsApp Number (optional)'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
             'weekday_hours': forms.TextInput(attrs={'placeholder': 'Monday - Friday hours'}),
             'saturday_hours': forms.TextInput(attrs={'placeholder': 'Saturday hours'}),
