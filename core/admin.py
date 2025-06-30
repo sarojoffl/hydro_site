@@ -19,4 +19,5 @@ admin.site.register(models.Report)
 admin.site.register(models.Download)
 admin.site.register(models.Notice)
 admin.site.register(models.Client)
+admin.site.register(models.NewsletterSubscriber)
 
