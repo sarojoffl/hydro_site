@@ -4,7 +4,6 @@ from . import admin_views
 urlpatterns = [
     # Dashboard
     path('', admin_views.dashboard_home, name='dashboard_home'),
-    path('logout/', admin_views.logout_view, name='logout'),
 
     # Homepage Section
     path('carousel/', admin_views.carouselitem_list, name='carouselitem_list'),

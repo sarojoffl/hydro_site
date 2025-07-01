@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
 import csv
@@ -19,6 +20,19 @@ from .admin_forms import (
     ServiceForm, TeamMemberForm, TestimonialForm, ClientForm, ContactInfoForm,
     OrganizationDetailForm
 )
+
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('dashboard_home')
+        else:
+            messages.error(request, 'Invalid credentials or unauthorized access.')
+    return render(request, 'dashboard/login.html')
 
 @login_required
 def logout_view(request):
