@@ -52,7 +52,10 @@ from django.shortcuts import get_object_or_404
 
 def service_detail(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    return render(request, 'services/detail.html', {'service': service})
+    related_services = Service.objects.exclude(id=service.id)[:5]
+    return render(request, 'services/detail.html', {
+        'service': service,
+        'related_services': related_services})
 
 def projects(request):
     ongoing_projects = Project.objects.filter(status='ongoing')

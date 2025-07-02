@@ -53,6 +53,7 @@ from django.utils.text import slugify
 
 class Service(models.Model):
     title = models.CharField(max_length=200)
+    short_description = models.CharField(max_length=255, blank=True)
     description = models.TextField()
     image = models.ImageField(upload_to='services/')
     slug = models.SlugField(null=True, blank=True, unique=False)
